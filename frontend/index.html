@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rule Engine UI</title>
+    <link rel="icon" href="favicon.ico">
+
+</head>
+<body>
+    <h1>Rule Engine</h1>
+    <form id="rule-form">
+        <label for="rule">Enter Rule:</label><br><br>
+        <input type="text" id="rule" name="rule" placeholder="e.g., (age > 30 AND department = 'Sales')">
+        <br><br>
+        <button type="button" onclick="submitRule()">Submit Rule</button>
+    </form>
+
+    <script>
+        function submitRule() {
+            const rule = document.getElementById('rule').value;
+            fetch('http://localhost:5000/create_rule', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ rule_string: rule })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('AST:', data);
+                    alert('Rule submitted successfully!');
+                })
+                .catch(error => console.error('Error:', error));
+        }
+    </script>
+</body>
+</html>
